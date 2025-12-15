@@ -12,9 +12,15 @@ class ToDoListViewControler: UITableViewController {
     
     // Сделали массив изменяемым
     var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -60,6 +66,9 @@ class ToDoListViewControler: UITableViewController {
             guard !newTitle.isEmpty else { return }
             
             self.itemArray.append(newTitle)
+            
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+            
             self.tableView.reloadData()
         }
         
